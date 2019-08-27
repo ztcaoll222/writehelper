@@ -1,0 +1,6 @@
+# Project exclude paths
+/node_modules/
+/src/test/suite/extension.test.js
+/src/test/suite/index.js
+/src/test/runTest.js
+/src/extension.js
