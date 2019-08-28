@@ -22,6 +22,7 @@ let syncAddr: string = "%s/bucket/sync";
 // 身份标识
 let id: string = "";
 
+// 字数统计模块
 let wordCount: wordcount.WordCount;
 
 /**
@@ -68,55 +69,6 @@ function initSchedule(): void {
     }
 }
 
-/**
- * 显示状态栏
- */
-function showStatusBarItem(): void {
-    // 显示统计字数状态栏
-	wordCount.wordCountStatusBarItem.text = wordCount.updateStatusBarItem();
-	wordCount.wordCountStatusBarItem.show();
-}
-
-/**
- * 初始化状态栏项
- *
- * @param wordCount
- * @param subscriptions
- */
-function initWordCountStatusBarItem(wordCount: wordcount.WordCount, subscriptions: { dispose(): any; }[] | vscode.Disposable[]): void {
-    wordCount.wordCountStatusBarItem.command = wordcount.WordCount.countFlagCommand;
-    subscriptions.push(wordCount.wordCountStatusBarItem);
-    subscriptions.push(vscode.window.onDidChangeActiveTextEditor(showStatusBarItem));
-    subscriptions.push(vscode.window.onDidChangeTextEditorSelection(showStatusBarItem));
-    showStatusBarItem();
-}
-
-/**
- * 初始化字数统计 flag 快速选择
- *
- * @param wordCount
- * @param subscriptions
- */
-function initCountFlagQuickPickDisposable(wordCount: wordcount.WordCount, subscriptions: { dispose(): any; }[] | vscode.Disposable[]): void {
-    let countFlagQuickPickDisposable = vscode.commands.registerCommand(wordcount.WordCount.countFlagCommand, () => {
-        vscode.window.showQuickPick([{
-            label: wordCount.getStatusBarItemText(0),
-            code: 0,
-            description: "字符"
-        }, {
-            label: wordCount.getStatusBarItemText(1),
-            code: 1,
-            description: "去除符号"
-        }]).then(value => {
-            if (value) {
-                wordCount.countFlag = value.code;
-                showStatusBarItem();
-            }
-        });
-    });
-    subscriptions.push(countFlagQuickPickDisposable);
-}
-
 // 插件激活时
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "writehelper" is now active!');
@@ -128,13 +80,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     let subscriptions = context.subscriptions;
 
-    let wordCountStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
     // 读取统计 flag 设置
     let tCountFlag = vscode.workspace.getConfiguration().get("writeHelper.countFlag");
     if (tCountFlag) {
-        wordCount = new wordcount.WordCount(<number>tCountFlag, wordCountStatusBarItem);
-        initWordCountStatusBarItem(wordCount, subscriptions);
-        initCountFlagQuickPickDisposable(wordCount, subscriptions);
+        wordCount = new wordcount.WordCount(<number>tCountFlag, subscriptions);
     }
 
     initSchedule();
