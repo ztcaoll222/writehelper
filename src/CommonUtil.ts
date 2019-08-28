@@ -10,3 +10,19 @@ export function cleanString(text: string): string {
     text = text.replace(/\s/g, '');
     return text;
 }
+
+/**
+ * 判空
+ *
+ * @param objs
+ */
+export function checkObj(...objs: any[]) {
+    return objs.every(obj => {
+        if (obj) {
+            let str = obj.toString();
+            return cleanString(str).length !== 0;
+        } else {
+            return false;
+        }
+    });
+}

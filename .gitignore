@@ -4,3 +4,7 @@
 /src/test/suite/index.js
 /src/test/runTest.js
 /src/extension.js
+/.idea/
+/.vscode/
+/out/
+*.vsix

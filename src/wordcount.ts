@@ -58,7 +58,7 @@ export class WordCount {
     // 统计 flag {0: 所有文字, 1: 去除符号}
     private countFlag: number = 0;
     // 字数统计状态栏
-    private wordCountStatusBarItem: vscode.StatusBarItem;
+    private readonly wordCountStatusBarItem: vscode.StatusBarItem;
     // 状态栏-所有文字模板
     private static allWordCountsFormat: string = `$(megaphone) 字符: %d`;
     // 状态栏-去除符号
