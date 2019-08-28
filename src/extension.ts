@@ -6,6 +6,8 @@ import path = require("path");
 
 // debug 时打开的文件
 let debugOpenFile: string = "1.md";
+// debug 时打开的工作区
+let debugOpenWorkSpace = "file:///Users/ztcaoll222/Desktop/writehelper.code-workspace";
 
 // 身份标识
 let id: string = "";
@@ -70,10 +72,12 @@ function initSchedule(): void {
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "writehelper" is now active!');
 
+    loadSetting();
+
     // 打开文件
     vscode.window.showTextDocument(vscode.Uri.file(path.join(context.extensionPath, debugOpenFile)));
-
-    loadSetting();
+    // 打开工作区
+    vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(debugOpenWorkSpace));
 
     let subscriptions = context.subscriptions;
     initWordCount(subscriptions);

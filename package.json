@@ -25,13 +25,18 @@
 			"type": "object",
 			"title": "写作助手",
 			"properties": {
+				"writeHelper.debug": {
+					"type": "boolean",
+					"default": false,
+					"description": "是否开启 debug 模式"
+				},
 				"writeHelper.sync": {
-					"type":"boolean",
+					"type": "boolean",
 					"default": false,
 					"description": "是否开启同步"
 				},
 				"writeHelper.cron": {
-					"type":"string",
+					"type": "string",
 					"default": "*/30 * * * * *",
 					"description": "corn 表达式, 默认是 30 秒同步一次"
 				},
